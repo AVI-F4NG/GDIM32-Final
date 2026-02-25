@@ -4,7 +4,7 @@ using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
-    public TextMeshProUGUI dialogueTextDisplay;
+    public TMPro.TextMeshProUGUI dialogueTextDisplay;
     public Transform buttonContainer;
     public GameObject buttonPrefab;
 
