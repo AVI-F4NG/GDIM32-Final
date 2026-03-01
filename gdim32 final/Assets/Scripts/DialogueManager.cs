@@ -4,7 +4,7 @@ using TMPro;
 
 public class DialogueManager : MonoBehaviour
 {
-    public TMPro.TextMeshProUGUI dialogueTextDisplay;
+    public TextMeshProUGUI currentDialogue;
     public Transform buttonContainer;
     public GameObject buttonPrefab;
 
@@ -15,7 +15,7 @@ public class DialogueManager : MonoBehaviour
 
     void DisplayNode(DialogueNode node)
     {
-        dialogueTextDisplay.text = node.dialogueText;
+        currentDialogue.text = node.dialogueText;
 
         // Clear previous buttons
         foreach (Transform child in buttonContainer) Destroy(child.gameObject);
