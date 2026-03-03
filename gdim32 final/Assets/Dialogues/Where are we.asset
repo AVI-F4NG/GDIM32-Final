@@ -12,5 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3753d8393e1e6624aa2ec7e4949837b1, type: 3}
   m_Name: Where are we
   m_EditorClassIdentifier: 
-  dialogueText: 
-  options: []
+  dialogueText: We are trapped in this unfortunate forest...
+  options:
+  - buttonText: What's happening now...?
+    nextNode: {fileID: 11400000, guid: 64cd2a44e89662440966c8e0194ffd47, type: 2}
+  - buttonText: What should we do?
+    nextNode: {fileID: 11400000, guid: b52fea6aa9efbfc46baeb5c3619f72b9, type: 2}

@@ -1,6 +1,7 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
+using UnityEngine.UIElements;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -11,6 +12,11 @@ public class DialogueManager : MonoBehaviour
     public void StartDialogue(DialogueNode startNode)
     {
         DisplayNode(startNode);
+    }
+
+    private void Update()
+    {
+        transform.LookAt(Camera.main.transform);
     }
 
     void DisplayNode(DialogueNode node)
@@ -27,7 +33,7 @@ public class DialogueManager : MonoBehaviour
             btnObj.GetComponentInChildren<TextMeshProUGUI>().text = option.buttonText;
 
             // Set up the button click to load the next node
-            btnObj.GetComponent<Button>().onClick.AddListener(() => DisplayNode(option.nextNode));
+            btnObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => DisplayNode(option.nextNode));
         }
     }
 }
