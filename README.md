@@ -25,11 +25,11 @@ The NPC should only chase if the player is close enough and actually visible (no
 - Post processing
 
 #### How useful is the proposal / breakdown
-##### Was your Proposal detailed enough, or did you end up having to address more details as you went?
+#### Was your Proposal detailed enough, or did you end up having to address more details as you went?
 I think the proposal is pretty useful, it helps me keep track of how much stuff we should implement to the game, such as item pick-up and skills. It was detailed enough, I just implemented it as-is.
-##### Has anything changed about your architecture plans?
+#### Has anything changed about your architecture plans?
 I have changed "NavMesh agent" of the monster NPC to a script of "randomly patrol around and when the player is close enough and within LOS (with raycasting), it comes closer to the player's transform."
-##### What will you improve in your planning process for future games?
+#### What will you improve in your planning process for future games?
 Maintain in-group coordination and don't have scene file merge conflicts!!!
 
 ### Ke-Chieh Chang
@@ -40,13 +40,13 @@ Maintain in-group coordination and don't have scene file merge conflicts!!!
 - Refined dialogue system, designed dialogue branches and the overall UI during conversation
 
 #### How useful is the proposal / breakdown
-##### Was your Proposal detailed enough, or did you end up having to address more details as you went?
+#### Was your Proposal detailed enough, or did you end up having to address more details as you went?
 Our proposal is very detailed which gives me a clear start-up. The problems would only be that the proposal was too well-elaborated and we might not be able to finish implementing all features (because it's far-beyond the bare minimum XD)
 
-##### Has anything changed about your architecture plans?
+#### Has anything changed about your architecture plans?
 I implemented the dialogue features slightly different than I planned and than what we saw in the in-class demo. Instead of pressing keycode to advance dialogue, I require the player to press button and make choice everytime when advancing the dialogue, and also when ending the dialogue. I feel this way of dialogue system is more intuitive. 
 
-##### What will you improve in your planning process for future games?
+#### What will you improve in your planning process for future games?
 For the final two weeks, we will really have to communicate to tasks distribution and set effective deadlines for each group member. I found us having problem with deadlines (for me, I was too stressed out for other subjects work QAQ). 
 
 ### Team Member Name 3
@@ -86,6 +86,4 @@ Put your individual final Devlog here.
 [3D Nature Assets](https://assetstore.unity.com/packages/3d/environments/3d-nature-assetspack-215646)
 
 - Terrain Tools: 
-[Procedural Terrain](https://assetstore.unity.com/packages/tools/terrain/procedural-terrain-painter-free-automatic-terrain-texturing-188357)
-
-[StampIt](https://assetstore.unity.com/packages/tools/terrain/stampit-collection-free-heightmaps-for-unity-6-microverse-gaia-t-218286)
+[Procedural Terrain](https://assetstore.unity.com/packages/tools/terrain/procedural-terrain-painter-free-automatic-terrain-texturing-188357), [StampIt](https://assetstore.unity.com/packages/tools/terrain/stampit-collection-free-heightmaps-for-unity-6-microverse-gaia-t-218286)
