@@ -1,4 +1,6 @@
 using UnityEngine;
+using System;
+
 
 [DisallowMultipleComponent]
 [RequireComponent(typeof(CharacterController))]
@@ -8,6 +10,7 @@ public sealed class MonsterBehavior : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private Transform player;
+    [SerializeField] private PlayerPickup playerPickupSource;
 
     [Header("Speeds")]
     [SerializeField, Min(0f)] private float patrolSpeed = 2.5f;
@@ -25,11 +28,20 @@ public sealed class MonsterBehavior : MonoBehaviour
     [SerializeField] private LayerMask obstacleMask = ~0;
 
     [Header("Chase Detection (SphereCast + LOS)")]
-    [SerializeField, Min(0.1f)] private float chaseRange = 8.0f;          // how far the cast goes
-    [SerializeField, Min(0.01f)] private float proximityRadius = 8.0f;     // sphere radius (usually same as range)
+    [SerializeField, Min(0.1f)] private float chaseRange = 8.0f;
+    [SerializeField, Min(0.01f)] private float proximityRadius = 8.0f;
     [SerializeField] private float sensorHeight = 1.2f;
-    [SerializeField] private LayerMask playerMask;                         // set to Player layer
-    [SerializeField] private LayerMask losMask = ~0;                       // walls + player
+    [SerializeField] private LayerMask playerMask;
+    [SerializeField] private LayerMask losMask = ~0;
+
+    [Header("Stun (Lantern)")]
+    [SerializeField] private string lanternItemKey = "Lantern";
+    [SerializeField] private KeyCode stunKey = KeyCode.F;
+    [SerializeField, Min(0.1f)] private float stunRange = 2.5f;
+    [SerializeField, Min(0.1f)] private float stunDurationSeconds = 3.0f;
+
+    [Header("Stun Cooldown")]
+    [SerializeField, Min(0f)] private float stunCooldownSeconds = 6.0f;
 
     [Header("Gravity")]
     [SerializeField] private float gravity = -20f;
@@ -41,6 +53,16 @@ public sealed class MonsterBehavior : MonoBehaviour
     private float nextPatrolDirChangeTime;
     private float verticalVelocity;
 
+    private bool playerHasLantern;
+    private bool stunned;
+    private float stunEndsAt;
+    private float nextStunAllowedAt;
+
+    public float StunCooldownRemainingSeconds => Mathf.Max(0f, nextStunAllowedAt - Time.time);
+    public bool IsStunOnCooldown => StunCooldownRemainingSeconds > 0f;
+    public event Action Stunned;
+
+
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -51,26 +73,57 @@ public sealed class MonsterBehavior : MonoBehaviour
             if (tagged != null) player = tagged.transform;
         }
 
+        if (playerPickupSource == null && player != null)
+            playerPickupSource = player.GetComponentInChildren<PlayerPickup>();
+
+        if (playerMask.value == 0)
+        {
+            int playerLayer = LayerMask.NameToLayer("Player");
+            if (playerLayer >= 0) playerMask = 1 << playerLayer;
+        }
+
         PickNewPatrolDirection(transform.forward);
         nextPatrolDirChangeTime = Time.time + patrolDirChangeInterval;
     }
 
+    private void OnEnable()
+    {
+        if (playerPickupSource != null)
+            playerPickupSource.PickedUp += OnPlayerPickedUp;
+    }
+
+    private void OnDisable()
+    {
+        if (playerPickupSource != null)
+            playerPickupSource.PickedUp -= OnPlayerPickedUp;
+    }
+
     private void Update()
     {
-        bool proximityHitPlayer = DetectPlayerProximitySphereCast(out Transform sensedPlayer);
+        ApplyGravityOnly();
+
+        if (stunned)
+        {
+            if (Time.time >= stunEndsAt) stunned = false;
+            controller.Move(new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime);
+            return;
+        }
+
+        TryStunFromPlayerInput();
+
+        bool proximityHitPlayer = DetectPlayerProximity(out Transform sensedPlayer);
         if (player == null && sensedPlayer != null) player = sensedPlayer;
 
-        //bool canSeePlayer = player != null && CanSeePlayer(player);
+        bool canSeePlayer = player != null && CanSeePlayer(player);
 
         if (state == NpcState.Patrolling)
         {
-            if (proximityHitPlayer)
+            if (proximityHitPlayer && canSeePlayer)
                 state = NpcState.Chasing;
         }
         else
         {
-            // End chase if player not in proximity anymore OR LOS breaks
-            if (!proximityHitPlayer)
+            if (!proximityHitPlayer || !canSeePlayer)
             {
                 state = NpcState.Patrolling;
                 nextPatrolDirChangeTime = Time.time + patrolDirChangeInterval;
@@ -80,26 +133,56 @@ public sealed class MonsterBehavior : MonoBehaviour
 
         if (state == NpcState.Patrolling) ExecutePatrol();
         else ExecuteChase();
-
-        ApplyGravityOnly();
     }
 
-    private bool DetectPlayerProximitySphereCast(out Transform hitPlayer)
+    private void OnPlayerPickedUp(PlayerPickup.PickupEvent e)
+    {
+        if (string.Equals(e.ItemKey, lanternItemKey, System.StringComparison.Ordinal))
+            playerHasLantern = true;
+    }
+
+    private void TryStunFromPlayerInput()
+    {
+        if (!playerHasLantern) return;
+        if (player == null) return;
+        if (Time.time < nextStunAllowedAt) return;
+        if (!Input.GetKeyDown(stunKey)) return;
+
+        Vector3 a = transform.position; a.y = 0f;
+        Vector3 b = player.position; b.y = 0f;
+
+        if ((a - b).sqrMagnitude > stunRange * stunRange) return;
+
+        stunned = true;
+        stunEndsAt = Time.time + stunDurationSeconds;
+        nextStunAllowedAt = Time.time + stunCooldownSeconds;
+
+        Stunned?.Invoke();
+    }
+
+    private bool DetectPlayerProximity(out Transform hitPlayer)
     {
         hitPlayer = null;
 
         Vector3 origin = transform.position + Vector3.up * sensorHeight;
 
-        // SphereCast needs a direction; we cast forward for range and also do a short "0-length" cast fallback.
-        Vector3 forward = transform.forward;
+        RaycastHit[] hits = Physics.SphereCastAll(
+            origin,
+            proximityRadius,
+            transform.forward,
+            chaseRange,
+            playerMask,
+            QueryTriggerInteraction.Ignore
+        );
 
-        if (Physics.SphereCast(origin, proximityRadius, forward, out RaycastHit hit, chaseRange, playerMask, QueryTriggerInteraction.Ignore))
+        for (int i = 0; i < hits.Length; i++)
         {
-            hitPlayer = hit.transform;
+            Transform t = hits[i].transform;
+            if (t == null) continue;
+            hitPlayer = t;
             return true;
         }
 
-        // Fallback: treat as "nearby in any direction" using OverlapSphere when forward cast misses
         Collider[] cols = Physics.OverlapSphere(origin, proximityRadius, playerMask, QueryTriggerInteraction.Ignore);
         if (cols.Length > 0)
         {
@@ -117,10 +200,11 @@ public sealed class MonsterBehavior : MonoBehaviour
         Vector3 dir = target - origin;
 
         float maxDist = Mathf.Max(chaseRange, proximityRadius);
-
         if (dir.sqrMagnitude <= 0.0001f) return true;
 
-        if (Physics.Raycast(origin, dir.normalized, out RaycastHit hit, maxDist, losMask, QueryTriggerInteraction.Ignore))
+        int mask = losMask | playerMask;
+
+        if (Physics.Raycast(origin, dir.normalized, out RaycastHit hit, maxDist, mask, QueryTriggerInteraction.Ignore))
             return hit.transform == targetPlayer || hit.transform.IsChildOf(targetPlayer);
 
         return false;
@@ -151,11 +235,7 @@ public sealed class MonsterBehavior : MonoBehaviour
 
     private void ExecuteChase()
     {
-        if (player == null)
-        {
-            ExecutePatrol();
-            return;
-        }
+        if (player == null) { ExecutePatrol(); return; }
 
         Vector3 toPlayer = player.position - transform.position;
         toPlayer.y = 0f;
@@ -174,7 +254,7 @@ public sealed class MonsterBehavior : MonoBehaviour
         preferred.y = 0f;
         if (preferred.sqrMagnitude < 0.001f) preferred = Vector3.forward;
 
-        Vector2 r = Random.insideUnitCircle.normalized;
+        Vector2 r = UnityEngine.Random.insideUnitCircle.normalized;
         Vector3 randomDir = new Vector3(r.x, 0f, r.y);
 
         Vector3 mixed = Vector3.Slerp(preferred.normalized, randomDir, patrolDirJitter);
@@ -183,9 +263,7 @@ public sealed class MonsterBehavior : MonoBehaviour
 
     private void MoveInDirection(Vector3 dir, float speed)
     {
-        Vector3 move = dir;
-        move.y = 0f;
-
+        Vector3 move = dir; move.y = 0f;
         if (move.sqrMagnitude > 1f) move.Normalize();
 
         Vector3 horizontal = move * speed;
@@ -202,9 +280,7 @@ public sealed class MonsterBehavior : MonoBehaviour
 
     private void ApplyGravityOnly()
     {
-        if (controller.isGrounded && verticalVelocity < 0f)
-            verticalVelocity = -2f;
-
+        if (controller.isGrounded && verticalVelocity < 0f) verticalVelocity = -2f;
         verticalVelocity += gravity * Time.deltaTime;
     }
 }
