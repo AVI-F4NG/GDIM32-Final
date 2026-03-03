@@ -459,6 +459,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2280228598539027383, guid: b47d64d864408ce47a43bc9b66b94921, type: 3}
   m_PrefabInstance: {fileID: 2057049817}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2016026374
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2016026372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b8938da86cdcbe4ab90d6c8ca03c5ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monster: {fileID: 9103305149016495159}
+  pointLight: {fileID: 2057049818}
+  intensityBoost: 3
+  pulseDurationSeconds: 0.2
 --- !u!1001 &2057049817
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -518,8 +534,16 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2282646848960490829, guid: b47d64d864408ce47a43bc9b66b94921, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2016026374}
   m_SourcePrefab: {fileID: 100100000, guid: b47d64d864408ce47a43bc9b66b94921, type: 3}
+--- !u!108 &2057049818 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 5473952949614750113, guid: b47d64d864408ce47a43bc9b66b94921, type: 3}
+  m_PrefabInstance: {fileID: 2057049817}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2070269116 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8285189098401723179, guid: c06940d61d0a4f441bca978537ebf13c, type: 3}
@@ -563,7 +587,27 @@ MonoBehaviour:
   pickableMask:
     serializedVersion: 2
     m_Bits: 256
+  hintMessage: Left click to pick up
   questTickImage: {fileID: 1814986905}
+  lanternItemKey: Lantern
+  lanternSkillText: {fileID: 0}
+--- !u!114 &2070269121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070269116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ccc8931b1634c844a72b5f097fd4219, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  monster: {fileID: 0}
+  cooldownText: {fileID: 0}
+  prefix: 'Stun ready in: '
+  suffix: s
+  decimals: 1
 --- !u!1001 &2470400193623142322
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -632,6 +676,10 @@ PrefabInstance:
     - target: {fileID: 3061323107082624266, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
       propertyPath: m_Name
       value: UI
+      objectReference: {fileID: 0}
+    - target: {fileID: 5694008755090371387, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5810928489754993398, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -889,6 +937,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8285189098401723179, guid: c06940d61d0a4f441bca978537ebf13c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2070269120}
+    - targetCorrespondingSourceObject: {fileID: 8285189098401723179, guid: c06940d61d0a4f441bca978537ebf13c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2070269121}
     - targetCorrespondingSourceObject: {fileID: 4838261966425352638, guid: c06940d61d0a4f441bca978537ebf13c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1264833132}
@@ -1092,9 +1143,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 298755680}
     - target: {fileID: 8178368100401272698, guid: a5fdebad557aa744f980f52c387c2357, type: 3}
+      propertyPath: gravity
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8178368100401272698, guid: a5fdebad557aa744f980f52c387c2357, type: 3}
+      propertyPath: stunRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8178368100401272698, guid: a5fdebad557aa744f980f52c387c2357, type: 3}
       propertyPath: patrolDirJitter
       value: 0.606
       objectReference: {fileID: 0}
+    - target: {fileID: 8178368100401272698, guid: a5fdebad557aa744f980f52c387c2357, type: 3}
+      propertyPath: playerPickupSource
+      value: 
+      objectReference: {fileID: 2070269119}
     - target: {fileID: 8178368100401272698, guid: a5fdebad557aa744f980f52c387c2357, type: 3}
       propertyPath: obstacleMask.m_Bits
       value: 439
@@ -1107,6 +1170,17 @@ PrefabInstance:
       addedObject: {fileID: 517240187}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5fdebad557aa744f980f52c387c2357, type: 3}
+--- !u!114 &9103305149016495159 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8178368100401272698, guid: a5fdebad557aa744f980f52c387c2357, type: 3}
+  m_PrefabInstance: {fileID: 9103305149016495158}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae0c8d533a318e64bb30db306f96c3cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
