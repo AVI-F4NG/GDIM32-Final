@@ -1376,6 +1376,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Audio
       objectReference: {fileID: 0}
+    - target: {fileID: 6275316344163579222, guid: 1ba01a4effafbee4aa02b1eec4304c4e, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1449,6 +1453,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7034246226927823464, guid: a5fdebad557aa744f980f52c387c2357, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: e6d26da4c22b4734a96b976b0e8ddae2, type: 2}
     - target: {fileID: 8178368100401272698, guid: a5fdebad557aa744f980f52c387c2357, type: 3}
       propertyPath: player
       value: 
