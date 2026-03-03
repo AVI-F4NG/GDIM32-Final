@@ -26,9 +26,9 @@ The NPC should only chase if the player is close enough and actually visible (no
 
 #### How useful is the proposal / breakdown
 #### Was your Proposal detailed enough, or did you end up having to address more details as you went?
-I think the proposal is pretty useful, it helps me keep track of how much stuff we should implement to the game, such as item pick-up and skills. It was detailed enough, I just implemented it as-is.
+I think the proposal is pretty useful, it helps me keep track of how much stuff we should implement to the game, such as item pick-up and skills. It was detailed enough, I just implemented parts such as the pick-up as it is. However, the proposal also mentioned some other skills such as a fuel level, which are too complex to implement right now and for now the game is a simplified version of it.
 #### Has anything changed about your architecture plans?
-I have changed "NavMesh agent" of the monster NPC to a script of "randomly patrol around and when the player is close enough and within LOS (with raycasting), it comes closer to the player's transform."
+I have changed "NavMesh agent" of the monster NPC to a transform-oriented script: it lets the monster randomly patrol around and when the player is close enough and within LOS (with raycasting), it comes closer to the player's transform.
 #### What will you improve in your planning process for future games?
 Maintain in-group coordination and don't have scene file merge conflicts!!!
 
