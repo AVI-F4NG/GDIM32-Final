@@ -9,6 +9,7 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI currentDialogue;
     public Transform buttonContainer;
     public GameObject buttonPrefab;
+    public bool inConversation = false;
 
 
     private void Start()
@@ -17,6 +18,8 @@ public class DialogueManager : MonoBehaviour
     }
     public void StartDialogue(DialogueNode startNode)
     {
+        //Debug.Log("Start Dialogue");
+        inConversation = true;
         dialoguePanel.SetActive(true);
         UnityEngine.Cursor.lockState = CursorLockMode.None;
         UnityEngine.Cursor.visible = true;
@@ -58,6 +61,7 @@ public class DialogueManager : MonoBehaviour
 
     void EndDialogue()
     {
+        inConversation = false;
         dialoguePanel.SetActive(false);
         UnityEngine.Cursor.lockState = CursorLockMode.Locked; // Re-lock for 3D play
         UnityEngine.Cursor.visible = false;

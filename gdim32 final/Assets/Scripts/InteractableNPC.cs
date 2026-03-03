@@ -1,29 +1,38 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class InteractableNPC : MonoBehaviour
 {
     [SerializeField] private DialogueNode startingNode;
+    [SerializeField] private GameObject showInteract;
     [SerializeField] private Transform playerTransform;
+    [SerializeField] private Transform npcTransform;
     [SerializeField] private DialogueManager dialogueManager;
-    [SerializeField] private float interactDistance = 2.0f;
+    [SerializeField] private float interactDistance = 5.0f;
 
-    private bool playerInRange = false;
+    private bool inConversation = false;
     void Update()
     {
-        if (Vector3.Distance(transform.position, playerTransform.position) < interactDistance)
+        if (Vector3.Distance(npcTransform.position, playerTransform.position) < interactDistance)
         {
-            playerInRange = true;
+            if (!showInteract.activeSelf && !inConversation) showInteract.SetActive(true);
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                inConversation = true;
+                showInteract.SetActive(false);
+                dialogueManager.StartDialogue(startingNode);
+            }
         }
-        else
-        {
-            playerInRange = false;
+        else {
+            inConversation = false;
+            if (showInteract.activeSelf) showInteract.SetActive(false);
         }
-
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
-        {
-            dialogueManager.StartDialogue(startingNode);
-        }
+    }
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(npcTransform.position, interactDistance);
     }
 }

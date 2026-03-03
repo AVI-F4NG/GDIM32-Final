@@ -46,7 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingNode: {fileID: 11400000, guid: 57ad479555e454f43ab5717ed758d70b, type: 2}
+  showInteract: {fileID: 0}
   playerTransform: {fileID: 0}
+  npcTransform: {fileID: 2294397679300337915}
   dialogueManager: {fileID: 0}
   interactDistance: 2
 --- !u!1001 &2164997518151762639
@@ -59,7 +61,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 134205623996031540, guid: 0a4f08680aae46c40a223464a32cb265, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.0043029785
+      value: -0.39
       objectReference: {fileID: 0}
     - target: {fileID: 134205623996031540, guid: 0a4f08680aae46c40a223464a32cb265, type: 3}
       propertyPath: m_LocalPosition.y
@@ -67,7 +69,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 134205623996031540, guid: 0a4f08680aae46c40a223464a32cb265, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.000038146973
+      value: -3.94
       objectReference: {fileID: 0}
     - target: {fileID: 134205623996031540, guid: 0a4f08680aae46c40a223464a32cb265, type: 3}
       propertyPath: m_LocalRotation.w
