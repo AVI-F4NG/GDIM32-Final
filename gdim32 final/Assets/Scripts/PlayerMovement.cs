@@ -18,6 +18,7 @@ public sealed class PlayerMovement : MonoBehaviour
     [SerializeField] private bool lockCursor = true;
 
     private CharacterController controller;
+    [SerializeField] private DialogueManager dialogueManager;
     private float cameraPitch;
     private float verticalVelocity;
 
@@ -43,7 +44,7 @@ public sealed class PlayerMovement : MonoBehaviour
         Move();
     }
 
-    private void ApplyCursorState()
+private void ApplyCursorState()
     {
         if (!lockCursor) return;
 
@@ -55,14 +56,17 @@ public sealed class PlayerMovement : MonoBehaviour
     {
         if (playerCamera == null) return;
 
-        float mx = Input.GetAxisRaw("Mouse X") * mouseSensitivity;
-        float my = Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
+        if (!dialogueManager.inConversation)
+        {
+            float mx = Input.GetAxisRaw("Mouse X") * mouseSensitivity;
+            float my = Input.GetAxisRaw("Mouse Y") * mouseSensitivity;
 
-        transform.Rotate(Vector3.up * mx);
+            transform.Rotate(Vector3.up * mx);
 
-        cameraPitch -= my;
-        cameraPitch = Mathf.Clamp(cameraPitch, -maxLookAngle, maxLookAngle);
-        playerCamera.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
+            cameraPitch -= my;
+            cameraPitch = Mathf.Clamp(cameraPitch, -maxLookAngle, maxLookAngle);
+            playerCamera.localRotation = Quaternion.Euler(cameraPitch, 0f, 0f);
+        }
     }
 
     private void Move()

@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3753d8393e1e6624aa2ec7e4949837b1, type: 3}
   m_Name: What should we do
   m_EditorClassIdentifier: 
-  dialogueText: 'There''s a lantern somewhere in the forest. It would be helpful
-    for us to escape. '
+  dialogueText: Grab the lantern on the tree. It's behind me. It would be helpful
+    for us when you explore.
   options: []
