@@ -71,7 +71,6 @@ public sealed class PlayerPickup : MonoBehaviour
 
         Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
         if (!Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactMask, QueryTriggerInteraction.Ignore)){
-            Debug.Log("not hit");
             return;
         }
         
