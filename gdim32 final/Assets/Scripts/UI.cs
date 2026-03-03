@@ -12,20 +12,30 @@ public sealed class UI : MonoBehaviour
     [SerializeField] private TMP_Text pickupHintText;
     [SerializeField, Min(0.1f)] private float hintRadius = 3.0f;
     [SerializeField] private LayerMask pickableMask = ~0;
+    [SerializeField] private string hintMessage = "Left click to pick up";
 
     [Header("Quest Tick UI")]
     [SerializeField] private Image questTickImage;
 
+    [Header("Lantern UI")]
+    [SerializeField] private string lanternItemKey = "Lantern";
+    [SerializeField] private TMP_Text lanternSkillText;
+
     private void Awake()
     {
+        if (pickupSource == null) pickupSource = GetComponentInParent<PlayerPickup>();
 
         if (pickupHintText != null)
         {
+            pickupHintText.text = hintMessage;
             pickupHintText.gameObject.SetActive(false);
         }
 
         if (questTickImage != null)
             questTickImage.gameObject.SetActive(false);
+
+        if (lanternSkillText != null)
+            lanternSkillText.gameObject.SetActive(false);
     }
 
     private void OnEnable()
@@ -46,6 +56,9 @@ public sealed class UI : MonoBehaviour
 
         bool nearPickable = IsNearAnyPickable();
         pickupHintText.gameObject.SetActive(nearPickable);
+
+        if (nearPickable)
+            pickupHintText.text = hintMessage;
     }
 
     private bool IsNearAnyPickable()
@@ -57,7 +70,6 @@ public sealed class UI : MonoBehaviour
         {
             if (hits[i] == null) continue;
 
-            // Supports PickableObject being on the collider or on a parent.
             if (hits[i].TryGetComponent<PickableObject>(out _)) return true;
             if (hits[i].GetComponentInParent<PickableObject>() != null) return true;
         }
@@ -72,5 +84,8 @@ public sealed class UI : MonoBehaviour
 
         if (questTickImage != null)
             questTickImage.gameObject.SetActive(true);
+
+        if (lanternSkillText != null && string.Equals(e.ItemKey, lanternItemKey, System.StringComparison.Ordinal))
+            lanternSkillText.gameObject.SetActive(true);
     }
 }
