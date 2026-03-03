@@ -746,15 +746,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 2249656424746673439, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
-      insertIndex: 0
-      addedObject: {fileID: 311403840}
-    - targetCorrespondingSourceObject: {fileID: 2249656424746673439, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
-      insertIndex: 1
-      addedObject: {fileID: 1379936571}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
+--- !u!1 &3721373022349079311 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3154788136824902027, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
+  m_PrefabInstance: {fileID: 3721373022349079310}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3721373022349079315 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1668490000465732036, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
@@ -1075,7 +1074,7 @@ PrefabInstance:
     - target: {fileID: 8985602521092697889, guid: 63ba9785df32c8544a3059d2edb2049b, type: 3}
       propertyPath: showInteract
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 3721373022349079311}
     - target: {fileID: 8985602521092697889, guid: 63ba9785df32c8544a3059d2edb2049b, type: 3}
       propertyPath: startingNode
       value: 
