@@ -26,9 +26,9 @@ The NPC should only chase if the player is close enough and actually visible (no
 
 #### How useful is the proposal / breakdown
 #### Was your Proposal detailed enough, or did you end up having to address more details as you went?
-I think the proposal is pretty useful, it helps me keep track of how much stuff we should implement to the game, such as item pick-up and skills. It was detailed enough, I just implemented it as-is.
+I think the proposal is pretty useful, it helps me keep track of how much stuff we should implement to the game, such as item pick-up and skills. It was detailed enough, I just implemented parts such as the pick-up as it is. However, the proposal also mentioned some other skills such as a fuel level, which are too complex to implement right now and for now the game is a simplified version of it.
 #### Has anything changed about your architecture plans?
-I have changed "NavMesh agent" of the monster NPC to a script of "randomly patrol around and when the player is close enough and within LOS (with raycasting), it comes closer to the player's transform."
+I have changed "NavMesh agent" of the monster NPC to a transform-oriented script: it lets the monster randomly patrol around and when the player is close enough and within LOS (with raycasting), it comes closer to the player's transform.
 #### What will you improve in your planning process for future games?
 Maintain in-group coordination and don't have scene file merge conflicts!!!
 
@@ -49,10 +49,20 @@ I implemented the dialogue features slightly different than I planned and than w
 #### What will you improve in your planning process for future games?
 For the final two weeks, we will really have to communicate to tasks distribution and set effective deadlines for each group member. I found us having problem with deadlines (for me, I was too stressed out for other subjects work QAQ). 
 
-### Team Member Name 3
-Put your individual check-in Devlog here.
+### Jamin Pinson
+#### Contributions
+- Implemented the falling snow particle system
+- Implemented the platform script in which later on will spawn the monster
+- Added an incomplete version of the latern which will show the exit
+- Added the incomplete version of the fear meter which will increase as the monster sees the player within its field of view.
 
-
+#### How useful is the proposal / breakdown
+#### Was your Proposal detailed enough, or did you end up having to address more details as you went?
+The proposal definitely has helped a lot in understanding what I want to add since we were very detailed with the proposal. It helped convey ideas if I didn't remember that such as the platform script where it is supposed to spawn the monster.
+#### Has anything changed about your architecture plans?
+Something that has changed about my architecture plans is I definitely added more scripts than I previously anticipated and I also need to implement the pathfinder into my architecture plans.
+#### What will you improve in your planning process for future games?
+What I will improve on is doing more research on certain aspects of design that I don't fully understand and just dedicate more time than I have done now. I hope to dedicate much more time to this game in the next 2 weeks than previously before.
 ## Final Submission
 ### Group Devlog
 Put your group Devlog here.
