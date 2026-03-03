@@ -3,7 +3,7 @@
 The NPC should only chase if the player is close enough and actually visible (no wall between them). Also, chase should stop if line of sight is broken.
 
 This is a line from the NPC’s “eyes” to the player’s “eyes”.
-If the first collider hit along that line is the player, then the NPC has LOS.
+If the first collider hit along that line is the player, then the NPC has line-of-sight (aka LOS).
 If the first collider hit is a obstacle, then the player is occluded.
 
 How the code works:
