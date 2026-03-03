@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8828886770842821458}
-  - component: {fileID: 4869086600214855123}
+  - component: {fileID: 8985602521092697889}
   m_Layer: 0
   m_Name: Villager
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   - {fileID: 2294397679300337915}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4869086600214855123
+--- !u!114 &8985602521092697889
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,6 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 859bf7d8e343feb4f9d0d0f4836bf7db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startingNode: {fileID: 11400000, guid: 57ad479555e454f43ab5717ed758d70b, type: 2}
+  playerTransform: {fileID: 0}
+  dialogueManager: {fileID: 0}
+  interactDistance: 2
 --- !u!1001 &2164997518151762639
 PrefabInstance:
   m_ObjectHideFlags: 0

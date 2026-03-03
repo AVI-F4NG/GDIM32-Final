@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class InteractableNPC : MonoBehaviour
 {
-    [SerializeField] public DialogueNode startingNode;
-    [SerializeField] public Transform playerTransform;
-    [SerializeField] public DialogueManager dialogueManager;
-    [SerializeField] public float interactDistance = 2.0f;
+    [SerializeField] private DialogueNode startingNode;
+    [SerializeField] private Transform playerTransform;
+    [SerializeField] private DialogueManager dialogueManager;
+    [SerializeField] private float interactDistance = 2.0f;
 
     private bool playerInRange = false;
     void Update()
     {
-        if (Vector3.Distance(transform, playerTransform) < interactDistance)
+        if (Vector3.Distance(transform.position, playerTransform.position) < interactDistance)
         {
             playerInRange = true;
         }
@@ -21,7 +21,7 @@ public class InteractableNPC : MonoBehaviour
             playerInRange = false;
         }
 
-        if (PlayerInRange && Input.GetKeyDown(KeyCode.E))
+        if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
             dialogueManager.StartDialogue(startingNode);
         }

@@ -18,8 +18,8 @@ public class DialogueManager : MonoBehaviour
     public void StartDialogue(DialogueNode startNode)
     {
         dialoguePanel.SetActive(true);
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        UnityEngine.Cursor.lockState = CursorLockMode.None;
+        UnityEngine.Cursor.visible = true;
         DisplayNode(startNode);
     }
 
@@ -28,21 +28,38 @@ public class DialogueManager : MonoBehaviour
         transform.LookAt(Camera.main.transform);
     }
 
-    void DisplayNode(DialogueNode node)
+    public void DisplayNode(DialogueNode node)
     {
         currentDialogue.text = node.dialogueText;
-
-        // Clear previous buttons
         foreach (Transform child in buttonContainer) Destroy(child.gameObject);
 
-        // Create a button for each branching path
-        foreach (DialogueOption option in node.options)
+        if (node.options.Length == 0)
         {
-            GameObject btnObj = Instantiate(buttonPrefab, buttonContainer);
-            btnObj.GetComponentInChildren<TextMeshProUGUI>().text = option.buttonText;
-
-            // Set up the button click to load the next node
-            btnObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => DisplayNode(option.nextNode));
+            CreateButton("End Conversation", null);
         }
+        else
+        {
+            foreach (var option in node.options)
+            {
+                CreateButton(option.buttonText, option.nextNode);
+            }
+        }
+    }
+
+    void CreateButton(string text, DialogueNode nextNode)
+    {
+        GameObject btnObj = Instantiate(buttonPrefab, buttonContainer);
+        btnObj.GetComponentInChildren<TextMeshProUGUI>().text = text;
+        btnObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => {
+            if (nextNode != null) DisplayNode(nextNode);
+            else EndDialogue();
+        });
+    }
+
+    void EndDialogue()
+    {
+        dialoguePanel.SetActive(false);
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked; // Re-lock for 3D play
+        UnityEngine.Cursor.visible = false;
     }
 }
