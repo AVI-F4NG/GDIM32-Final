@@ -5,12 +5,21 @@ using UnityEngine.UIElements;
 
 public class DialogueManager : MonoBehaviour
 {
+    public GameObject dialoguePanel;
     public TextMeshProUGUI currentDialogue;
     public Transform buttonContainer;
     public GameObject buttonPrefab;
 
+
+    private void Start()
+    {
+        dialoguePanel.SetActive(false);
+    }
     public void StartDialogue(DialogueNode startNode)
     {
+        dialoguePanel.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         DisplayNode(startNode);
     }
 
