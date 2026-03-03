@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Interact : MonoBehaviour
+public class InteractableNPC : MonoBehaviour
 {
-    public DialogueNode startingNode;
-    public Transform playerTransform;
-    public DialogueManager dialogueManager;
-    public float interactDistance = 2.0f;
+    [SerializeField] public DialogueNode startingNode;
+    [SerializeField] public Transform playerTransform;
+    [SerializeField] public DialogueManager dialogueManager;
+    [SerializeField] public float interactDistance = 2.0f;
 
     private bool playerInRange = false;
     void Update()
@@ -16,8 +16,8 @@ public class Interact : MonoBehaviour
         {
             playerInRange = true;
         }
-        else 
-        { 
+        else
+        {
             playerInRange = false;
         }
 
