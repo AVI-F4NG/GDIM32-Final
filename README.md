@@ -1,9 +1,8 @@
 # GDIM32-Final
 ## Group Devlog - Prompt B
-Describe how intermediate-level vector math is being used in your project. This could be any of following the vector topics we talked about in Weeks 7-8: dot products, surface normals, coordinate space transformations, or raycasting (or sphere-casting, box-casting, etc). Make sure to clearly describe the feature that required this math; what concept you used and why it's relevant; and how the code works.
 
 We made use of the insights we gathered from in-class demos to redesign the movement of the monster NPC. For example, we applied raycasting, which is a manifestion of cross-product vector technique, to determine whether the monster should be chasing the player or randomly move around. 
-Raycasting is a line from the NPC’s “eyes” to the player’s “eyes”. If the first collider hit along that line is the player, then the monster will lock its target and chase the player. Otherwise, if the first collusive hit is an obstacle, then the monster's chasing movement won't be triggered.
+Raycasting is a line from the NPC’s “eyes” to the player’s “eyes”. If the first collider hit along that line is the player, then the monster has line-of-sight (aka LOS) and will lock its target and chase the player. Otherwise, if the first collusive hit is an obstacle, then the monster's chasing movement won't be triggered.
 
 How the code works:
 - It chooses an origin/target at head height.
