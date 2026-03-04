@@ -12,6 +12,7 @@ public sealed class Lantern : MonoBehaviour
     [SerializeField, Min(0f)] private float intensityBoost = 2.0f;
     [SerializeField, Min(0.01f)] private float pulseDurationSeconds = 0.5f;
 
+
     private float baseIntensity;
     private Coroutine pulseRoutine;
 
@@ -57,4 +58,7 @@ public sealed class Lantern : MonoBehaviour
         pointLight.intensity = start;
         pulseRoutine = null;
     }
+
+
+
 }
