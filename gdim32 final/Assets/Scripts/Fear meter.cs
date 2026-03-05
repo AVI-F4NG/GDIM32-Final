@@ -36,7 +36,7 @@ public class FearMeter : MonoBehaviour
         if (!forcedChase && fear >= chaseThreshold)
         {
             forcedChase = true;
-            monster.ForceChaseMode();
+            //monster.ForceChaseMode();
         }
     }
 
