@@ -1,7 +1,6 @@
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
+using System.Collections;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -10,7 +9,7 @@ public class DialogueManager : MonoBehaviour
     public Transform buttonContainer;
     public GameObject buttonPrefab;
     public bool inConversation = false;
-
+    [SerializeField] private float typingSpeed = 0.05f;
 
     private void Start()
     {
@@ -26,14 +25,9 @@ public class DialogueManager : MonoBehaviour
         DisplayNode(startNode);
     }
 
-    private void Update()
-    {
-        transform.LookAt(Camera.main.transform);
-    }
-
     public void DisplayNode(DialogueNode node)
     {
-        currentDialogue.text = node.dialogueText;
+        StartCoroutine(TypeText(node.dialogueText, currentDialogue));
         foreach (Transform child in buttonContainer) Destroy(child.gameObject);
 
         if (node.options.Length == 0)
@@ -65,5 +59,16 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
         UnityEngine.Cursor.lockState = CursorLockMode.Locked; // Re-lock for 3D play
         UnityEngine.Cursor.visible = false;
+    }
+    public IEnumerator TypeText(string textToType, TextMeshProUGUI textDisplay)
+    {
+        textDisplay.text = "";
+
+        foreach (char letter in textToType.ToCharArray())
+        {
+            textDisplay.text += letter;
+            // Optional: Play a tiny "blip" sound here!
+            yield return new WaitForSeconds(typingSpeed);
+        }
     }
 }
