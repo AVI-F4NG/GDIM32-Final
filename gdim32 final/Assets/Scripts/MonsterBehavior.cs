@@ -11,6 +11,7 @@ public sealed class MonsterBehavior : MonoBehaviour
     [Header("References")]
     [SerializeField] private Transform player;
     [SerializeField] private PlayerPickup playerPickupSource;
+    [SerializeField] private FearMeter fearMeter;
 
     [Header("Speeds")]
     [SerializeField, Min(0f)] private float patrolSpeed = 2.5f;
@@ -119,7 +120,10 @@ public sealed class MonsterBehavior : MonoBehaviour
         if (state == NpcState.Patrolling)
         {
             if (proximityHitPlayer && canSeePlayer)
+            {
                 state = NpcState.Chasing;
+                fearMeter.SetPlayerInFOV(true);
+            }
         }
         else
         {

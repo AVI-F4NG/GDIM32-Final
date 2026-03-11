@@ -358,6 +358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73555eb0b1f8acb408d7763faf68a225, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _mainCamera: {fileID: 0}
 --- !u!1 &3708409563814475789
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,6 +454,7 @@ MonoBehaviour:
   buttonContainer: {fileID: 2000369135429331822}
   buttonPrefab: {fileID: 8265361937787796053, guid: 4f20ee4d2810c764aa0586868983f323, type: 3}
   inConversation: 0
+  typingSpeed: 0.05
 --- !u!1 &4917251070625741513
 GameObject:
   m_ObjectHideFlags: 0
@@ -504,7 +506,7 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   npcTransform: {fileID: 2294397679300337915}
   dialogueManager: {fileID: 9113429438763125402}
-  interactDistance: 2
+  interactDistance: 1
 --- !u!1 &7536139908882710297
 GameObject:
   m_ObjectHideFlags: 0

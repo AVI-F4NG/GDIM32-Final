@@ -29,6 +29,7 @@ public class FearMeter : MonoBehaviour
             fear -= fearDecreaseRate * Time.deltaTime;
 
         fear = Mathf.Clamp(fear, 0f, 100f);
+        Debug.Log($"Fear: {fear}");
 
         UpdateMonsterVisibility();
 

@@ -103,6 +103,7 @@ GameObject:
   - component: {fileID: 2874937856738586516}
   - component: {fileID: 277651504274334953}
   - component: {fileID: 8851409491191301000}
+  - component: {fileID: 2561114928654274015}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -173,3 +174,23 @@ MonoBehaviour:
   mouseSensitivity: 3
   maxLookAngle: 63.5
   lockCursor: 1
+  dialogueManager: {fileID: 0}
+--- !u!114 &2561114928654274015
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8285189098401723179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c3e491802ed7b24f8461b997801a9be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fear: 0
+  fearIncreaseRate: 20
+  fearDecreaseRate: 15
+  chaseThreshold: 75
+  monster: {fileID: 0}
+  monsterRenderer: {fileID: 0}
+  lanternIsActive: 0

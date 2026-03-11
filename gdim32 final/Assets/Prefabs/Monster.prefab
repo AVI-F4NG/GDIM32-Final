@@ -78,6 +78,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f27c0b3a3196234418ac082e89eccdbd, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8178368100401272698}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: f27c0b3a3196234418ac082e89eccdbd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 570981019550270029}
   m_SourcePrefab: {fileID: 100100000, guid: f27c0b3a3196234418ac082e89eccdbd, type: 3}
 --- !u!1 &4338468188240456360 stripped
 GameObject:
@@ -123,6 +126,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 0}
+  playerPickupSource: {fileID: 0}
   patrolSpeed: 2.5
   chaseSpeed: 5
   turnSpeedDegPerSec: 360
@@ -143,4 +147,22 @@ MonoBehaviour:
   losMask:
     serializedVersion: 2
     m_Bits: 55
+  lanternItemKey: Lantern
+  stunKey: 102
+  stunRange: 2.5
+  stunDurationSeconds: 3
+  stunCooldownSeconds: 6
   gravity: 0
+--- !u!114 &570981019550270029
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4338468188240456360}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 35afc07b5ae93f74ca04994bd2b24c86, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fearMeter: {fileID: 0}

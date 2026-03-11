@@ -13,6 +13,7 @@ public sealed class Lantern : MonoBehaviour
     [SerializeField, Min(0.01f)] private float pulseDurationSeconds = 0.5f;
 
 
+    [SerializeField] private FearMeter fearmeter;
     private float baseIntensity;
     private Coroutine pulseRoutine;
 
@@ -42,6 +43,7 @@ public sealed class Lantern : MonoBehaviour
 
         if (pulseRoutine != null) StopCoroutine(pulseRoutine);
         pulseRoutine = StartCoroutine(Pulse());
+        fearmeter.lanternIsActive = true;
     }
 
     private IEnumerator Pulse()
@@ -58,7 +60,4 @@ public sealed class Lantern : MonoBehaviour
         pointLight.intensity = start;
         pulseRoutine = null;
     }
-
-
-
 }
