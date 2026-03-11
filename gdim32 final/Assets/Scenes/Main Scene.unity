@@ -305,6 +305,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5183330940702761426, guid: a29ae05832a6e4e4c905cca72705e454, type: 3}
   m_PrefabInstance: {fileID: 544675595}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &603302294 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4338468188240456360, guid: a5fdebad557aa744f980f52c387c2357, type: 3}
+  m_PrefabInstance: {fileID: 9103305149016495158}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &649266916
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1794,19 +1799,45 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3998780270262611986, guid: a5fdebad557aa744f980f52c387c2357, type: 3}
       insertIndex: -1
       addedObject: {fileID: 517240187}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4338468188240456360, guid: a5fdebad557aa744f980f52c387c2357, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 9103305149016495163}
   m_SourcePrefab: {fileID: 100100000, guid: a5fdebad557aa744f980f52c387c2357, type: 3}
 --- !u!114 &9103305149016495159 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8178368100401272698, guid: a5fdebad557aa744f980f52c387c2357, type: 3}
   m_PrefabInstance: {fileID: 9103305149016495158}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 603302294}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ae0c8d533a318e64bb30db306f96c3cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!136 &9103305149016495163
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 603302294}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 104.07475
+  m_Height: 208.1495
+  m_Direction: 1
+  m_Center: {x: 3.8, y: 9.216194, z: 7.269993}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -5,7 +5,7 @@ public class FearMeter : MonoBehaviour
     [Header("Fear Settings")]
     [Range(0f, 100f)] public float fear = 0f;
     public float fearIncreaseRate = 20f;
-    public float fearDecreaseRate = 15f;
+    // public float fearDecreaseRate = 15f;
     public float chaseThreshold = 75f;
 
     [Header("References")]
@@ -25,8 +25,10 @@ public class FearMeter : MonoBehaviour
             fear += fearIncreaseRate * Time.deltaTime;
 
         // Decrease fear when lantern is active
-        if (lanternIsActive)
-            fear -= fearDecreaseRate * Time.deltaTime;
+        if (lanternIsActive) {
+            fear *= 0.5f;
+            lanternIsActive = false;
+        }
 
         fear = Mathf.Clamp(fear, 0f, 100f);
         Debug.Log($"Fear: {fear}");
