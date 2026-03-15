@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,7 +15,6 @@ public sealed class PlayerPickup : MonoBehaviour
     public sealed class HeldItemEntry
     {
         public string itemKey;
-
         public GameObject heldObject;
     }
 
@@ -23,7 +22,6 @@ public sealed class PlayerPickup : MonoBehaviour
     public sealed class QuestItemEntry
     {
         public string itemKey;
-
         public PickupMode mode = PickupMode.CountOnly;
 
         [Min(1)]
@@ -34,11 +32,11 @@ public sealed class PlayerPickup : MonoBehaviour
     {
         public readonly string ItemKey;
         public readonly GameObject SceneObject;
-        public readonly GameObject HeldObject; // null for CountOnly
+        public readonly GameObject HeldObject;
         public readonly PickupMode Mode;
 
-        public readonly int CurrentCount; // 0 for HoldInHand
-        public readonly int TargetCount;  // 0 for HoldInHand
+        public readonly int CurrentCount;
+        public readonly int TargetCount;
 
         public PickupEvent(
             string itemKey,
@@ -69,6 +67,11 @@ public sealed class PlayerPickup : MonoBehaviour
 
     [Header("Quest Items (e.g., GlowStone)")]
     [SerializeField] private QuestItemEntry[] questItems;
+
+
+    [Header("Pickup Audio")]
+    [SerializeField] private AudioSource glowStoneSource;
+    [SerializeField] private AudioSource lanternSource;
 
     public event Action<PickupEvent> PickedUp;
 
@@ -148,7 +151,12 @@ public sealed class PlayerPickup : MonoBehaviour
         string key = pickable.ItemKey;
         if (string.IsNullOrWhiteSpace(key)) return;
 
-        if (keyToQuestEntry.TryGetValue(key, out QuestItemEntry quest) && quest != null && quest.mode == PickupMode.CountOnly)
+        // -------------------------
+        // QUEST ITEM (Glow Stone)
+        // -------------------------
+        if (keyToQuestEntry.TryGetValue(key, out QuestItemEntry quest) &&
+            quest != null &&
+            quest.mode == PickupMode.CountOnly)
         {
             int current = keyToCount.TryGetValue(key, out int c) ? c : 0;
             int target = Mathf.Max(1, quest.targetCount);
@@ -160,6 +168,10 @@ public sealed class PlayerPickup : MonoBehaviour
             }
 
             pickable.gameObject.SetActive(false);
+
+            // 🔊 Play Glow Stone sound
+            if (glowStoneSource != null)
+                glowStoneSource.Play();
 
             PickedUp?.Invoke(new PickupEvent(
                 key,
@@ -173,7 +185,9 @@ public sealed class PlayerPickup : MonoBehaviour
             return;
         }
 
-        // Hold-in-hand items (e.g., Lantern)
+        // -------------------------
+        // HOLD-IN-HAND ITEM (Lantern)
+        // -------------------------
         if (!keyToHeldObject.TryGetValue(key, out GameObject heldObj) || heldObj == null)
             return;
 
@@ -182,6 +196,10 @@ public sealed class PlayerPickup : MonoBehaviour
         activeHeld.SetActive(true);
 
         pickable.gameObject.SetActive(false);
+
+     
+        if (lanternSource != null)
+            lanternSource.Play();
 
         PickedUp?.Invoke(new PickupEvent(
             key,

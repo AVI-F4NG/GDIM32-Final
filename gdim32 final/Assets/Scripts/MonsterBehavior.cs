@@ -46,6 +46,14 @@ public sealed class MonsterBehavior : MonoBehaviour
     [Header("Gravity")]
     [SerializeField] private float gravity = -20f;
 
+  
+    [Header("Audio")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip walkClip;
+    [SerializeField] private AudioClip stunClip;
+
+    private bool walkingAudioPlaying = false;
+
     private CharacterController controller;
     private NpcState state = NpcState.Patrolling;
 
@@ -105,14 +113,18 @@ public sealed class MonsterBehavior : MonoBehaviour
         if (paused)
         {
             if (fearMeter != null) fearMeter.SetPlayerInFOV(false);
-            return; // hard-freeze: no AI, no gravity, no movement
+            return;
         }
 
         ApplyGravityOnly();
 
         if (stunned)
         {
-            if (Time.time >= stunEndsAt) stunned = false;
+            if (Time.time >= stunEndsAt)
+                stunned = false;
+
+            HandleWalkingAudio(false);
+
             controller.Move(new Vector3(0f, verticalVelocity, 0f) * Time.deltaTime);
             return;
         }
@@ -171,6 +183,13 @@ public sealed class MonsterBehavior : MonoBehaviour
         nextStunAllowedAt = Time.time + stunCooldownSeconds;
 
         Stunned?.Invoke();
+        PlayStunSound();
+    }
+
+    private void PlayStunSound()
+    {
+        if (audioSource != null && stunClip != null)
+            audioSource.PlayOneShot(stunClip);
     }
 
     private bool DetectPlayerProximity(out Transform hitPlayer)
@@ -287,8 +306,32 @@ public sealed class MonsterBehavior : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRot, turnSpeedDegPerSec * Time.deltaTime);
         }
 
+        HandleWalkingAudio(horizontal.sqrMagnitude > 0.01f);
+
         Vector3 velocity = new Vector3(horizontal.x, verticalVelocity, horizontal.z);
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    private void HandleWalkingAudio(bool isMoving)
+    {
+        if (isMoving)
+        {
+            if (!walkingAudioPlaying && audioSource != null && walkClip != null)
+            {
+                audioSource.clip = walkClip;
+                audioSource.loop = true;
+                audioSource.Play();
+                walkingAudioPlaying = true;
+            }
+        }
+        else
+        {
+            if (walkingAudioPlaying && audioSource != null)
+            {
+                audioSource.Stop();
+                walkingAudioPlaying = false;
+            }
+        }
     }
 
     private void ApplyGravityOnly()
