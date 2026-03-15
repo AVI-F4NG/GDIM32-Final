@@ -54,10 +54,8 @@ public sealed class Settings : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(toggleKey)){
+        if (Input.GetKeyDown(toggleKey))
             SetOpen(!isOpen);
-            Debug.Log("open");
-        }
     }
 
     private void ConfigureUiRanges()
@@ -70,9 +68,7 @@ public sealed class Settings : MonoBehaviour
         }
 
         if (sensitivityInput != null)
-        {
             sensitivityInput.contentType = TMP_InputField.ContentType.DecimalNumber;
-        }
     }
 
     private void SetOpen(bool open)
@@ -87,6 +83,9 @@ public sealed class Settings : MonoBehaviour
 
         if (open && sensitivityInput != null)
             sensitivityInput.ActivateInputField();
+
+        var blockState = PlayerGameplayBlockState.GetOrFind();
+        if (blockState != null) blockState.SetSettingsOpen(open);
     }
 
     private void OnSliderChanged(float value)

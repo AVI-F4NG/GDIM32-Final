@@ -9,23 +9,25 @@ public class FearMeter : MonoBehaviour
     public float chaseThreshold = 75f;
 
     [Header("References")]
-    public MonsterBehavior monster;          // Drag your MonsterBehavior here
-    public Renderer monsterRenderer;         // Drag the monster's mesh renderer here
+    public MonsterBehavior monster;
+    public Renderer monsterRenderer;
 
     [Header("Lantern State")]
-    public bool lanternIsActive = false;     // You toggle this from your match system
+    public bool lanternIsActive = false;
 
     private bool playerInFOV = false;
     private bool forcedChase = false;
 
     private void Update()
     {
-        // Increase fear when monster sees player
-        if (playerInFOV)
+        bool blockFear = PlayerGameplayBlockState.Instance != null &&
+                        PlayerGameplayBlockState.Instance.ShouldBlockFear;
+
+        if (playerInFOV && !blockFear)
             fear += fearIncreaseRate * Time.deltaTime;
 
-        // Decrease fear when lantern is active
-        if (lanternIsActive) {
+        if (lanternIsActive)
+        {
             fear *= 0.5f;
             lanternIsActive = false;
         }
@@ -35,14 +37,12 @@ public class FearMeter : MonoBehaviour
 
         UpdateMonsterVisibility();
 
-        // Trigger chase at 75%
         if (!forcedChase && fear >= chaseThreshold)
         {
             forcedChase = true;
             //monster.ForceChaseMode();
         }
     }
-
     public void SetPlayerInFOV(bool inFOV)
     {
         playerInFOV = inFOV;

@@ -1,7 +1,6 @@
 using UnityEngine;
 using System;
 
-
 [DisallowMultipleComponent]
 [RequireComponent(typeof(CharacterController))]
 public sealed class MonsterBehavior : MonoBehaviour
@@ -63,7 +62,6 @@ public sealed class MonsterBehavior : MonoBehaviour
     public bool IsStunOnCooldown => StunCooldownRemainingSeconds > 0f;
     public event Action Stunned;
 
-
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -101,6 +99,15 @@ public sealed class MonsterBehavior : MonoBehaviour
 
     private void Update()
     {
+        var blockState = PlayerGameplayBlockState.GetOrFind();
+        bool paused = blockState != null && blockState.IsPausedGameplay;
+
+        if (paused)
+        {
+            if (fearMeter != null) fearMeter.SetPlayerInFOV(false);
+            return; // hard-freeze: no AI, no gravity, no movement
+        }
+
         ApplyGravityOnly();
 
         if (stunned)
@@ -122,7 +129,7 @@ public sealed class MonsterBehavior : MonoBehaviour
             if (proximityHitPlayer && canSeePlayer)
             {
                 state = NpcState.Chasing;
-                fearMeter.SetPlayerInFOV(true);
+                if (fearMeter != null) fearMeter.SetPlayerInFOV(true);
             }
         }
         else
@@ -130,6 +137,8 @@ public sealed class MonsterBehavior : MonoBehaviour
             if (!proximityHitPlayer || !canSeePlayer)
             {
                 state = NpcState.Patrolling;
+                if (fearMeter != null) fearMeter.SetPlayerInFOV(false);
+
                 nextPatrolDirChangeTime = Time.time + patrolDirChangeInterval;
                 PickNewPatrolDirection(patrolDir.sqrMagnitude > 0.001f ? patrolDir : transform.forward);
             }
