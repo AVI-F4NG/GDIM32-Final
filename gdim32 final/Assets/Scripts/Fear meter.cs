@@ -1,11 +1,13 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class FearMeter : MonoBehaviour
 {
     [Header("Fear Settings")]
     [Range(0f, 100f)] public float fear = 0f;
     public float fearIncreaseRate = 20f;
-    // public float fearDecreaseRate = 15f;
     public float chaseThreshold = 75f;
 
     [Header("References")]
@@ -15,13 +17,37 @@ public class FearMeter : MonoBehaviour
     [Header("Lantern State")]
     public bool lanternIsActive = false;
 
+    [Header("Lose")]
+    [SerializeField] private string loseSceneName = "LoseScene";
+
+    [Header("Post Processing - Vignette")]
+    [SerializeField] private Volume postProcessVolume;
+    [SerializeField, Range(0f, 100f)] private float vignetteStartFear = 50f;
+    [SerializeField, Range(0f, 1f)] private float vignetteIntensityAtStart = 0.25f;
+    [SerializeField, Range(0f, 1f)] private float vignetteIntensityAtMax = 0.6f;
+
     private bool playerInFOV = false;
     private bool forcedChase = false;
+    private bool loseTriggered = false;
+
+    private Vignette vignette;
+    private float vignetteBaseIntensity;
+    private bool vignetteReady;
+
+    private void Awake()
+    {
+        if (postProcessVolume != null && postProcessVolume.profile != null)
+        {
+            vignetteReady = postProcessVolume.profile.TryGet(out vignette);
+            if (vignetteReady)
+                vignetteBaseIntensity = vignette.intensity.value;
+        }
+    }
 
     private void Update()
     {
         bool blockFear = PlayerGameplayBlockState.Instance != null &&
-                        PlayerGameplayBlockState.Instance.ShouldBlockFear;
+                         PlayerGameplayBlockState.Instance.ShouldBlockFear;
 
         if (playerInFOV && !blockFear)
             fear += fearIncreaseRate * Time.deltaTime;
@@ -33,16 +59,24 @@ public class FearMeter : MonoBehaviour
         }
 
         fear = Mathf.Clamp(fear, 0f, 100f);
-        Debug.Log($"Fear: {fear}");
 
+        UpdateVignette();
         UpdateMonsterVisibility();
+
+        if (!loseTriggered && fear >= 100f)
+        {
+            loseTriggered = true;
+            SceneManager.LoadScene(loseSceneName);
+            return;
+        }
 
         if (!forcedChase && fear >= chaseThreshold)
         {
             forcedChase = true;
-            //monster.ForceChaseMode();
+            // monster.ForceChaseMode();
         }
     }
+
     public void SetPlayerInFOV(bool inFOV)
     {
         playerInFOV = inFOV;
@@ -56,5 +90,20 @@ public class FearMeter : MonoBehaviour
         Color c = monsterRenderer.material.color;
         c.a = alpha;
         monsterRenderer.material.color = c;
+    }
+
+    private void UpdateVignette()
+    {
+        if (!vignetteReady || vignette == null) return;
+
+        if (fear < vignetteStartFear)
+        {
+            vignette.intensity.value = vignetteBaseIntensity;
+            return;
+        }
+
+        float t = Mathf.InverseLerp(vignetteStartFear, 100f, fear);
+        float target = Mathf.Lerp(vignetteIntensityAtStart, vignetteIntensityAtMax, t);
+        vignette.intensity.value = target;
     }
 }
