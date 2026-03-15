@@ -1,3 +1,4 @@
+// Assets/Scripts/PlayerPickup.cs
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,27 +6,55 @@ using UnityEngine;
 [DisallowMultipleComponent]
 public sealed class PlayerPickup : MonoBehaviour
 {
+    public enum PickupMode
+    {
+        HoldInHand,
+        CountOnly
+    }
+
     [Serializable]
     public sealed class HeldItemEntry
     {
-        [Tooltip("Must match PickableObject.itemKey on the scene object.")]
         public string itemKey;
 
-        [Tooltip("Inactive child GameObject under the player that represents the held item.")]
         public GameObject heldObject;
+    }
+
+    [Serializable]
+    public sealed class QuestItemEntry
+    {
+        public string itemKey;
+
+        public PickupMode mode = PickupMode.CountOnly;
+
+        [Min(1)]
+        public int targetCount = 3;
     }
 
     public readonly struct PickupEvent
     {
         public readonly string ItemKey;
         public readonly GameObject SceneObject;
-        public readonly GameObject HeldObject;
+        public readonly GameObject HeldObject; // null for CountOnly
+        public readonly PickupMode Mode;
 
-        public PickupEvent(string itemKey, GameObject sceneObject, GameObject heldObject)
+        public readonly int CurrentCount; // 0 for HoldInHand
+        public readonly int TargetCount;  // 0 for HoldInHand
+
+        public PickupEvent(
+            string itemKey,
+            GameObject sceneObject,
+            GameObject heldObject,
+            PickupMode mode,
+            int currentCount,
+            int targetCount)
         {
             ItemKey = itemKey;
             SceneObject = sceneObject;
             HeldObject = heldObject;
+            Mode = mode;
+            CurrentCount = currentCount;
+            TargetCount = targetCount;
         }
     }
 
@@ -36,12 +65,18 @@ public sealed class PlayerPickup : MonoBehaviour
     [SerializeField, Min(0.1f)] private float interactDistance = 4f;
     [SerializeField] private LayerMask interactMask = ~0;
 
-    [Header("Held Items")]
+    [Header("Hold Items (e.g., Lantern)")]
     [SerializeField] private HeldItemEntry[] heldItems;
+
+    [Header("Quest Items (e.g., GlowStone)")]
+    [SerializeField] private QuestItemEntry[] questItems;
 
     public event Action<PickupEvent> PickedUp;
 
     private readonly Dictionary<string, GameObject> keyToHeldObject = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, QuestItemEntry> keyToQuestEntry = new(StringComparer.Ordinal);
+    private readonly Dictionary<string, int> keyToCount = new(StringComparer.Ordinal);
+
     private GameObject activeHeld;
 
     private void Awake()
@@ -62,6 +97,39 @@ public sealed class PlayerPickup : MonoBehaviour
                 entry.heldObject.SetActive(false);
             }
         }
+
+        keyToQuestEntry.Clear();
+        keyToCount.Clear();
+        if (questItems != null)
+        {
+            for (int i = 0; i < questItems.Length; i++)
+            {
+                var q = questItems[i];
+                if (q == null) continue;
+                if (string.IsNullOrWhiteSpace(q.itemKey)) continue;
+
+                keyToQuestEntry[q.itemKey] = q;
+
+                if (q.mode == PickupMode.CountOnly)
+                    keyToCount[q.itemKey] = 0;
+            }
+        }
+    }
+
+    public int GetQuestCount(string itemKey)
+    {
+        return keyToCount.TryGetValue(itemKey, out int c) ? c : 0;
+    }
+
+    public int GetQuestTarget(string itemKey)
+    {
+        return keyToQuestEntry.TryGetValue(itemKey, out var q) ? Mathf.Max(0, q.targetCount) : 0;
+    }
+
+    public bool IsQuestComplete(string itemKey)
+    {
+        int target = GetQuestTarget(itemKey);
+        return target > 0 && GetQuestCount(itemKey) >= target;
     }
 
     private void Update()
@@ -70,16 +138,44 @@ public sealed class PlayerPickup : MonoBehaviour
         if (playerCamera == null) return;
 
         Ray ray = playerCamera.ScreenPointToRay(Input.mousePosition);
-        if (!Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactMask, QueryTriggerInteraction.Ignore)){
+        if (!Physics.Raycast(ray, out RaycastHit hit, interactDistance, interactMask, QueryTriggerInteraction.Ignore))
             return;
-        }
-        
+
         if (!hit.transform.TryGetComponent(out PickableObject pickable))
             pickable = hit.transform.GetComponentInParent<PickableObject>();
 
         if (pickable == null) return;
 
-        if (!keyToHeldObject.TryGetValue(pickable.ItemKey, out GameObject heldObj) || heldObj == null)
+        string key = pickable.ItemKey;
+        if (string.IsNullOrWhiteSpace(key)) return;
+
+        if (keyToQuestEntry.TryGetValue(key, out QuestItemEntry quest) && quest != null && quest.mode == PickupMode.CountOnly)
+        {
+            int current = keyToCount.TryGetValue(key, out int c) ? c : 0;
+            int target = Mathf.Max(1, quest.targetCount);
+
+            if (current < target)
+            {
+                current++;
+                keyToCount[key] = current;
+            }
+
+            pickable.gameObject.SetActive(false);
+
+            PickedUp?.Invoke(new PickupEvent(
+                key,
+                pickable.gameObject,
+                heldObject: null,
+                mode: PickupMode.CountOnly,
+                currentCount: current,
+                targetCount: target
+            ));
+
+            return;
+        }
+
+        // Hold-in-hand items (e.g., Lantern)
+        if (!keyToHeldObject.TryGetValue(key, out GameObject heldObj) || heldObj == null)
             return;
 
         if (activeHeld != null) activeHeld.SetActive(false);
@@ -88,6 +184,13 @@ public sealed class PlayerPickup : MonoBehaviour
 
         pickable.gameObject.SetActive(false);
 
-        PickedUp?.Invoke(new PickupEvent(pickable.ItemKey, pickable.gameObject, activeHeld));
+        PickedUp?.Invoke(new PickupEvent(
+            key,
+            pickable.gameObject,
+            heldObject: activeHeld,
+            mode: PickupMode.HoldInHand,
+            currentCount: 0,
+            targetCount: 0
+        ));
     }
 }
