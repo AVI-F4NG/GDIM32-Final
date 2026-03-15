@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering.PostProcessing;
 
 public class FearMeter : MonoBehaviour
 {
@@ -20,8 +19,8 @@ public class FearMeter : MonoBehaviour
     [Header("Lose")]
     [SerializeField] private string loseSceneName = "LoseScene";
 
-    [Header("Post Processing - Vignette")]
-    [SerializeField] private Volume postProcessVolume;
+    [Header("Post Processing - Vignette (PPv2)")]
+    [SerializeField] private PostProcessVolume postProcessVolume;
     [SerializeField, Range(0f, 100f)] private float vignetteStartFear = 50f;
     [SerializeField, Range(0f, 1f)] private float vignetteIntensityAtStart = 0.25f;
     [SerializeField, Range(0f, 1f)] private float vignetteIntensityAtMax = 0.6f;
@@ -31,16 +30,16 @@ public class FearMeter : MonoBehaviour
     private bool loseTriggered = false;
 
     private Vignette vignette;
-    private float vignetteBaseIntensity;
+    private float baseVignetteIntensity;
     private bool vignetteReady;
 
     private void Awake()
     {
         if (postProcessVolume != null && postProcessVolume.profile != null)
         {
-            vignetteReady = postProcessVolume.profile.TryGet(out vignette);
-            if (vignetteReady)
-                vignetteBaseIntensity = vignette.intensity.value;
+            vignetteReady = postProcessVolume.profile.TryGetSettings(out vignette);
+            if (vignetteReady && vignette != null)
+                baseVignetteIntensity = vignette.intensity.value;
         }
     }
 
@@ -98,7 +97,7 @@ public class FearMeter : MonoBehaviour
 
         if (fear < vignetteStartFear)
         {
-            vignette.intensity.value = vignetteBaseIntensity;
+            vignette.intensity.value = baseVignetteIntensity;
             return;
         }
 
