@@ -16,7 +16,7 @@ public class InteractableNPC : MonoBehaviour
     [SerializeField] private float interactDistance = 5.0f;
     [SerializeField] private PlayerGameplayBlockState blockState;
 
-    [Header("Progression")]
+    [Header("Quests")]
     [SerializeField] private PlayerPickup playerPickup;
     [SerializeField] private string lanternItemKey = "Lantern";
     [SerializeField] private string glowStoneItemKey = "GlowStone";
@@ -93,7 +93,6 @@ public class InteractableNPC : MonoBehaviour
 
         return startingNode;
     }
-
     private void OnDialogueEnded()
     {
         inConversation = false;
