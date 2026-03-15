@@ -3589,6 +3589,9 @@ PrefabInstance:
       addedObject: {fileID: 2070269121}
     - targetCorrespondingSourceObject: {fileID: 8285189098401723179, guid: c06940d61d0a4f441bca978537ebf13c, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 6087741044450446010}
+    - targetCorrespondingSourceObject: {fileID: 8285189098401723179, guid: c06940d61d0a4f441bca978537ebf13c, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 6087741044450446009}
     - targetCorrespondingSourceObject: {fileID: 4838261966425352638, guid: c06940d61d0a4f441bca978537ebf13c, type: 3}
       insertIndex: -1
@@ -3630,6 +3633,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fearMeter: {fileID: 6087741044450446006}
   fearText: {fileID: 1658457604}
+--- !u!114 &6087741044450446010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2070269116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6575900e51d91548b0661a64722e55d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7726822558436808863
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3691,9 +3706,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8985602521092697889, guid: 63ba9785df32c8544a3059d2edb2049b, type: 3}
+      propertyPath: blockState
+      value: 
+      objectReference: {fileID: 6087741044450446010}
+    - target: {fileID: 8985602521092697889, guid: 63ba9785df32c8544a3059d2edb2049b, type: 3}
       propertyPath: npcTransform
       value: 
       objectReference: {fileID: 800965239}
+    - target: {fileID: 8985602521092697889, guid: 63ba9785df32c8544a3059d2edb2049b, type: 3}
+      propertyPath: playerPickup
+      value: 
+      objectReference: {fileID: 2070269119}
     - target: {fileID: 8985602521092697889, guid: 63ba9785df32c8544a3059d2edb2049b, type: 3}
       propertyPath: showInteract
       value: 
@@ -3711,9 +3734,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1264833129}
     - target: {fileID: 8985602521092697889, guid: 63ba9785df32c8544a3059d2edb2049b, type: 3}
+      propertyPath: afterLanternNode
+      value: 
+      objectReference: {fileID: 11400000, guid: 7be06f3072f6ef94f958885c60c815fb, type: 2}
+    - target: {fileID: 8985602521092697889, guid: 63ba9785df32c8544a3059d2edb2049b, type: 3}
+      propertyPath: glowStoneItemKey
+      value: Glowstone
+      objectReference: {fileID: 0}
+    - target: {fileID: 8985602521092697889, guid: 63ba9785df32c8544a3059d2edb2049b, type: 3}
       propertyPath: interactDistance
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 8985602521092697889, guid: 63ba9785df32c8544a3059d2edb2049b, type: 3}
+      propertyPath: afterAllGlowStonesNode
+      value: 
+      objectReference: {fileID: 11400000, guid: 16afc20d40d88e844a5610b47f67c7aa, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 3708409563814475789, guid: 63ba9785df32c8544a3059d2edb2049b, type: 3}

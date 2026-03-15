@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using System;
 using System.Collections;
 
 public class DialogueManager : MonoBehaviour
@@ -11,13 +12,15 @@ public class DialogueManager : MonoBehaviour
     public bool inConversation = false;
     [SerializeField] private float typingSpeed = 0.05f;
 
+    public event Action DialogueEnded; // NEW
+
     private void Start()
     {
         dialoguePanel.SetActive(false);
     }
+
     public void StartDialogue(DialogueNode startNode)
     {
-        //Debug.Log("Start Dialogue");
         inConversation = true;
         dialoguePanel.SetActive(true);
         UnityEngine.Cursor.lockState = CursorLockMode.None;
@@ -37,9 +40,7 @@ public class DialogueManager : MonoBehaviour
         else
         {
             foreach (var option in node.options)
-            {
                 CreateButton(option.buttonText, option.nextNode);
-            }
         }
     }
 
@@ -47,7 +48,8 @@ public class DialogueManager : MonoBehaviour
     {
         GameObject btnObj = Instantiate(buttonPrefab, buttonContainer);
         btnObj.GetComponentInChildren<TextMeshProUGUI>().text = text;
-        btnObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => {
+        btnObj.GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() =>
+        {
             if (nextNode != null) DisplayNode(nextNode);
             else EndDialogue();
         });
@@ -57,9 +59,12 @@ public class DialogueManager : MonoBehaviour
     {
         inConversation = false;
         dialoguePanel.SetActive(false);
-        UnityEngine.Cursor.lockState = CursorLockMode.Locked; // Re-lock for 3D play
+        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
         UnityEngine.Cursor.visible = false;
+
+        DialogueEnded?.Invoke(); // NEW
     }
+
     public IEnumerator TypeText(string textToType, TextMeshProUGUI textDisplay)
     {
         textDisplay.text = "";
@@ -67,7 +72,6 @@ public class DialogueManager : MonoBehaviour
         foreach (char letter in textToType.ToCharArray())
         {
             textDisplay.text += letter;
-            // Optional: Play a tiny "blip" sound here!
             yield return new WaitForSeconds(typingSpeed);
         }
     }
