@@ -12,7 +12,7 @@ public class DialogueManager : MonoBehaviour
     public bool inConversation = false;
     [SerializeField] private float typingSpeed = 0.05f;
 
-    public event Action DialogueEnded; // NEW
+    public event Action DialogueEnded;
 
     private void Start()
     {
@@ -23,8 +23,8 @@ public class DialogueManager : MonoBehaviour
     {
         inConversation = true;
         dialoguePanel.SetActive(true);
-        UnityEngine.Cursor.lockState = CursorLockMode.None;
-        UnityEngine.Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         DisplayNode(startNode);
     }
 
@@ -59,16 +59,15 @@ public class DialogueManager : MonoBehaviour
     {
         inConversation = false;
         dialoguePanel.SetActive(false);
-        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-        UnityEngine.Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
 
-        DialogueEnded?.Invoke(); // NEW
+        DialogueEnded?.Invoke();
     }
 
     public IEnumerator TypeText(string textToType, TextMeshProUGUI textDisplay)
     {
         textDisplay.text = "";
-
         foreach (char letter in textToType.ToCharArray())
         {
             textDisplay.text += letter;

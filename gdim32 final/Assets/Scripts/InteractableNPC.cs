@@ -1,11 +1,12 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class InteractableNPC : MonoBehaviour
 {
     [Header("Dialogue Nodes")]
     [SerializeField] private DialogueNode startingNode;
-    [SerializeField] private DialogueNode afterLanternNode;       // one-line node
-    [SerializeField] private DialogueNode afterAllGlowStonesNode; // final node
+    [SerializeField] private DialogueNode afterLanternNode;
+    [SerializeField] private DialogueNode afterAllGlowStonesNode;
 
     [Header("Interaction")]
     [SerializeField] private GameObject showInteract;
@@ -13,17 +14,18 @@ public class InteractableNPC : MonoBehaviour
     [SerializeField] private Transform npcTransform;
     [SerializeField] private DialogueManager dialogueManager;
     [SerializeField] private float interactDistance = 5.0f;
+    [SerializeField] private PlayerGameplayBlockState blockState;
 
     [Header("Progression")]
     [SerializeField] private PlayerPickup playerPickup;
     [SerializeField] private string lanternItemKey = "Lantern";
     [SerializeField] private string glowStoneItemKey = "GlowStone";
 
-    [Header("Pause Flags")]
-    [SerializeField] private PlayerGameplayBlockState blockState;
+    [Header("Win")]
+    [SerializeField] private string winSceneName = "WinScene";
 
-    private bool inConversation = false;
-    private bool lanternObtainedCached = false;
+    private bool inConversation;
+    private bool lanternObtainedCached;
 
     private void Awake()
     {
@@ -33,24 +35,35 @@ public class InteractableNPC : MonoBehaviour
 
     private void OnEnable()
     {
+        if (dialogueManager != null)
+            dialogueManager.DialogueEnded += OnDialogueEnded;
+
         if (playerPickup == null) playerPickup = FindFirstObjectByType<PlayerPickup>();
-        if (playerPickup != null) playerPickup.PickedUp += OnPickedUp;
+        if (playerPickup != null)
+            playerPickup.PickedUp += OnPickedUp;
     }
 
     private void OnDisable()
     {
-        if (playerPickup != null) playerPickup.PickedUp -= OnPickedUp;
+        if (dialogueManager != null)
+            dialogueManager.DialogueEnded -= OnDialogueEnded;
+
+        if (playerPickup != null)
+            playerPickup.PickedUp -= OnPickedUp;
     }
 
     void Update()
     {
         if (blockState == null) blockState = PlayerGameplayBlockState.GetOrFind();
 
-        if (Vector3.Distance(npcTransform.position, playerTransform.position) < interactDistance)
-        {
-            if (!showInteract.activeSelf && !inConversation) showInteract.SetActive(true);
+        bool inRange = Vector3.Distance(npcTransform.position, playerTransform.position) < interactDistance;
 
-            if (Input.GetKeyDown(KeyCode.E))
+        if (inRange)
+        {
+            if (!showInteract.activeSelf && !inConversation)
+                showInteract.SetActive(true);
+
+            if (Input.GetKeyDown(KeyCode.E) && !inConversation)
             {
                 inConversation = true;
                 if (blockState != null) blockState.SetTalking(true);
@@ -70,16 +83,7 @@ public class InteractableNPC : MonoBehaviour
 
     private DialogueNode SelectDialogueNode()
     {
-        if (playerPickup == null) playerPickup = FindFirstObjectByType<PlayerPickup>();
-
-        bool allGlowStones = false;
-
-        if (playerPickup != null)
-        {
-            int current = playerPickup.GetQuestCount(glowStoneItemKey);
-            int target = Mathf.Max(1, playerPickup.GetQuestTarget(glowStoneItemKey));
-            allGlowStones = current >= target;
-        }
+        bool allGlowStones = HasAllGlowStones();
 
         if (allGlowStones && afterAllGlowStonesNode != null)
             return afterAllGlowStonesNode;
@@ -88,6 +92,25 @@ public class InteractableNPC : MonoBehaviour
             return afterLanternNode;
 
         return startingNode;
+    }
+
+    private void OnDialogueEnded()
+    {
+        inConversation = false;
+        if (blockState != null) blockState.SetTalking(false);
+
+        if (lanternObtainedCached && HasAllGlowStones())
+            SceneManager.LoadScene(winSceneName);
+    }
+
+    private bool HasAllGlowStones()
+    {
+        if (playerPickup == null) playerPickup = FindFirstObjectByType<PlayerPickup>();
+        if (playerPickup == null) return false;
+
+        int current = playerPickup.GetQuestCount(glowStoneItemKey);
+        int target = Mathf.Max(1, playerPickup.GetQuestTarget(glowStoneItemKey));
+        return current >= target;
     }
 
     private void OnPickedUp(PlayerPickup.PickupEvent e)
