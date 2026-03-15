@@ -15,7 +15,9 @@ public enum QuestState
 public class QuestData : ScriptableObject
 {
     public string questName;
+    [TextArea] public string guideBeforeStart;
     [TextArea] public string description;
+    [TextArea] public string guideAfterFinish;
     public QuestState state;
 
     public int currentAmount;
