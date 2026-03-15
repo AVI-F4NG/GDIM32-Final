@@ -2622,7 +2622,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 37.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3355,6 +3355,18 @@ PrefabInstance:
       propertyPath: _mainCamera
       value: 
       objectReference: {fileID: 1264833131}
+    - target: {fileID: 1808002213855938793, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
+      propertyPath: m_fontSize
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1808002213855938793, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
+      propertyPath: m_fontSizeMax
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 1808002213855938793, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 2802316410651881701, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -3363,9 +3375,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: UI
       objectReference: {fileID: 0}
+    - target: {fileID: 3154788136824902027, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3215436518480572893, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
       propertyPath: typingSpeed
-      value: 0.02
+      value: 0.04
       objectReference: {fileID: 0}
     - target: {fileID: 4432973133930200877, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3399,6 +3415,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6617077069164927236, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -423.187
+      objectReference: {fileID: 0}
+    - target: {fileID: 6617077069164927236, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 257.048
+      objectReference: {fileID: 0}
+    - target: {fileID: 6617077069164927236, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 227.37
+      objectReference: {fileID: 0}
+    - target: {fileID: 6793005758334254341, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 1264833131}
     - target: {fileID: 6889142797744339617, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -3475,6 +3507,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8076721654196857247, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
+      propertyPath: _mainCamera
+      value: 
+      objectReference: {fileID: 1264833131}
+    - target: {fileID: 8076721654196857247, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
+      propertyPath: npcTransform
+      value: 
+      objectReference: {fileID: 800965239}
     - target: {fileID: 8242815349261535263, guid: e53cc2fad86bf684dba29a543b8ecf2c, type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
@@ -3991,7 +4031,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8985602521092697889, guid: 63ba9785df32c8544a3059d2edb2049b, type: 3}
       propertyPath: interactDistance
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 8985602521092697889, guid: 63ba9785df32c8544a3059d2edb2049b, type: 3}
       propertyPath: afterAllGlowStonesNode

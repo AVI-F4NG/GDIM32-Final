@@ -30,6 +30,7 @@ public class DialogueManager : MonoBehaviour
 
     public void DisplayNode(DialogueNode node)
     {
+        buttonContainer.gameObject.SetActive(false);
         StartCoroutine(TypeText(node.dialogueText, currentDialogue));
         foreach (Transform child in buttonContainer) Destroy(child.gameObject);
 
@@ -73,5 +74,6 @@ public class DialogueManager : MonoBehaviour
             textDisplay.text += letter;
             yield return new WaitForSeconds(typingSpeed);
         }
+        buttonContainer.gameObject.SetActive(true);
     }
 }
