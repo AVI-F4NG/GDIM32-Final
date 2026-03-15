@@ -108,4 +108,16 @@ private void ApplyCursorState()
         Vector3 velocity = new Vector3(moveWorld.x, verticalVelocity, moveWorld.z);
         controller.Move(velocity * Time.deltaTime);
     }
-}
+
+    public float MouseSensitivity
+    {
+        get => mouseSensitivity;
+        set => mouseSensitivity = Mathf.Max(0f, value);
+    }
+
+    public void SetCursorLocked(bool locked)
+    {
+        Cursor.lockState = locked ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.visible = !locked;
+    }
+    }
