@@ -72,7 +72,7 @@ What I will improve on is doing more research on certain aspects of design that 
 Monster Behavior script enum NpcState and the state field that switches between them, calling ExecutePatrol() vs ExecuteChase().
 
 ##### What it did for the game:
-The monster’s behavior is mode-based (patrol, chase, stunned). An FSM keeps that logic structured and predictable: each frame, the monster is in exactly one state, and transitions only happen under explicit conditions (player detected - chase; lost player - patrol). Without an FSM, there will ne a tangled if/else statements across multiple booleans.
+The monster’s behavior is mode-based (patrol, chase, stunned). An FSM keeps that logic structured and predictable: each frame, the monster is in exactly one state, and transitions only happen under explicit conditions (player detected - chase; lost player - patrol). Without an FSM, there will be a tangled if/else statements across multiple booleans.
 
 ##### Why it was useful here:
 There are features like proximity detection, line-of-sight checks, pausing movement, and stun/cooldown. FSM makes those additions safer because we can integrate them as transitions (patrol/chase), state-specific behavior (move differently per state), and global interrupts (stun/pause)
@@ -109,8 +109,15 @@ Multiple systems needed to obey the same pause rules:
 
 A singleton makes these flags easy to read anywhere without wiring references everywhere.
 
-### Team Member Name 1
-Put your individual final Devlog here.
+### Jingyi Cheng
+#### What have you contributed to the project since the Check-In?
+- added a settings panel that allows the player to adjust the mouse sensitivity; settings script
+- modified monster behavior so the monster will not move when the game is paused (by settings screen or NPC conversation)
+- added the second quest to the game, and refined player pickup logic so it handles two different kinds of object pickup
+- added the NPC dialogue associated with the second quest
+- added win/lose scenes and added win/lose logic to the corresponding scripts (win: friendly NPC script; lose: fear meter script)
+- adjusted fear meter so the post processing's vignette effect intensifies as it grows after fear exceeds 50
+
 ### Team Member Name 2
 Put your individual final Devlog here.
 ### Team Member Name 3
