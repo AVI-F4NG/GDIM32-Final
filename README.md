@@ -63,44 +63,45 @@ The proposal definitely has helped a lot in understanding what I want to add sin
 Something that has changed about my architecture plans is I definitely added more scripts than I previously anticipated and I also need to implement the pathfinder into my architecture plans.
 #### What will you improve in your planning process for future games?
 What I will improve on is doing more research on certain aspects of design that I don't fully understand and just dedicate more time than I have done now. I hope to dedicate much more time to this game in the next 2 weeks than previously before.
-## Final Submission
-### Group Devlog
 
-#### 1. Finite State Machine
+# Final Submission
+## Group Devlog
 
-##### Where it is: 
+### 1. Finite State Machine
+
+#### Where it is: 
 Monster Behavior script enum NpcState and the state field that switches between them, calling ExecutePatrol() vs ExecuteChase().
 
-##### What it did for the game:
+#### What it did for the game:
 The monster’s behavior is mode-based (patrol, chase, stunned). An FSM keeps that logic structured and predictable: each frame, the monster is in exactly one state, and transitions only happen under explicit conditions (player detected - chase; lost player - patrol). Without an FSM, there will be a tangled if/else statements across multiple booleans.
 
-##### Why it was useful here:
+#### Why it was useful here:
 There are features like proximity detection, line-of-sight checks, pausing movement, and stun/cooldown. FSM makes those additions safer because we can integrate them as transitions (patrol/chase), state-specific behavior (move differently per state), and global interrupts (stun/pause)
 
-#### 2. Event
+### 2. Event
 
-##### Where it is:
+#### Where it is:
 Player Pickup: event Action<PickupEvent> PickedUp; and PickedUp?.Invoke()
 Monster Behavior: event Action Stunned; and Stunned?.Invoke()
 
-##### What it did for the game:
+#### What it did for the game:
 This decouples systems that react to something (UI updates, monster stun FX, lantern light pulse, quest progression) from the system that causes it (pickup script, monster script).
 
-##### Why it was useful here:
+#### Why it was useful here:
 When the player picks up something, we don't want these things to happen: the pickup script to know about UI scripts, the pickup script to know about dialogue logic, or the pickup script to know about monster stun logic. Events let us plug new listeners in later with zero changes to the pickup code, perfect for the “we’ll use it in UI later” requirement; they also decouple different sets of logic from each other.
 
-#### 3. Singleton
+### 3. Singleton
 
-##### Where it is: 
+#### Where it is: 
 PlayerGameplayBlockState script and scripts reading PlayerGameplayBlockState.Instance.
 
-##### What it did for the game:
+#### What it did for the game:
 This provides a single authoritative source of truth for “gameplay blocked” conditions:
 
 - dialogue open (IsTalking)
 - settings open (IsSettingsOpen)
 
-##### Why it was useful here:
+#### Why it was useful here:
 Multiple systems needed to obey the same pause rules:
 
 - fear meter should stop rising
@@ -109,6 +110,7 @@ Multiple systems needed to obey the same pause rules:
 
 A singleton makes these flags easy to read anywhere without wiring references everywhere.
 
+## Individual Devlogs
 ### Jingyi Cheng
 #### What have you contributed to the project since the Check-In?
 - added a settings panel that allows the player to adjust the mouse sensitivity; settings script
@@ -118,8 +120,13 @@ A singleton makes these flags easy to read anywhere without wiring references ev
 - added win/lose scenes and added win/lose logic to the corresponding scripts (win: friendly NPC script; lose: fear meter script)
 - adjusted fear meter so the post processing's vignette effect intensifies as it grows after fear exceeds 50
 
-### Team Member Name 2
-Put your individual final Devlog here.
+### Ke-Chieh Chang
+#### What have you contributed to the project since the Check-In?
+- massively updated UI prefab by: creating several panel as folderss that split the screen up by zones (such as Top-Left HUDs, Center HUDs, Bottom Center HUDs, etc.); mapping each UI elements into their zones and use anchoring, auto-size, and container to make them self-adjustable and presentable across different screen sizes.
+- update the NPC interaction guide so it "floats" on top of the NPC and "looks at" player's camera (logic in the npcUIanchor script)
+- alter values through inspectors, including the NPC's interact range, monster detection range, character's speeds, and so on to create a more intuitive and better player experience. 
+
+
 ### Team Member Name 3
 Put your individual final Devlog here.
 
