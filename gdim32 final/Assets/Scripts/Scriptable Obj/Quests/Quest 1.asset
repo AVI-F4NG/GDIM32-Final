@@ -12,8 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a08c8cb20ebe6294d95cc8f40b22ca2f, type: 3}
   m_Name: Quest 1
   m_EditorClassIdentifier: 
-  questName: 
-  description: 
+  questName: Lantern Quest
+  guideBeforeStart: Talk to the Villager
+  description: Pick up the Lantern
+  guideAfterFinish: Report back to the Villager
   state: 0
   currentAmount: 0
-  requiredAmount: 0
+  requiredAmount: 1
