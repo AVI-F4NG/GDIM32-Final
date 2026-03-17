@@ -126,8 +126,11 @@ A singleton makes these flags easy to read anywhere without wiring references ev
 - alter values through inspectors, including the NPC's interact range, monster detection range, character's speeds, and so on to create a more intuitive and better player experience. 
 
 
-### Team Member Name 3
-Put your individual final Devlog here.
+### Jamin Pinson
+#### What have you contributed to the project since the Check-In?
+- created the basis of the monster FOV script which was then changed
+- created the basis of the Fear meter UI and script implementing the fear meter to increase as the monster gets close.
+- implemented the audio for the pick up, monster footsteps, and the stun ability.
 
 ## Open-Source Assets
 
